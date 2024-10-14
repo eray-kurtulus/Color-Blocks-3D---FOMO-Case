@@ -1,0 +1,18 @@
+- The .json contains the data for real levels used in the game. (Cleared of fields not included in the case)
+- The given levels are 1-2-3-6 in the game itself (if you want to check it out)
+- Most of the field names are self-explanatory, but the ones that need explaining are listed below.
+
+- MoveLimit is 0 when the level has no move limits.
+- Every item in CellInfo list contains info for each cell.
+- Every item in MovableInfo list contains info for each block.
+    - Direction list contains the directions that the block can move.
+    - You can assume that blocks only move horizontal and vertical.
+    - The following map can be used for directions:
+        - 0: Up
+        - 1: Right
+        - 2: Down
+        - 3: Left
+- Every item in ExitInfo contains info for each exit.
+    - Row and Col info denotes the cell that exit should be next to.
+    - Direction denotes the direction that exit is open to.
+- While mapping the colors, you can use any colors you like (both logically and visually). Just make sure the colors in exits and movables use the same color.
