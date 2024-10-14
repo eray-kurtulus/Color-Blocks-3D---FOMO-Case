@@ -22,20 +22,11 @@ public class UIManager : MonoSingleton<UIManager>
 
     private void Awake()
     {
+        base.Awake();
+        
         // Hide Win UI
         winUIRectTransform.gameObject.SetActive(false);
         failUIRectTransform.gameObject.SetActive(false);
-    }
-
-    private void Start()
-    {
-        // Doing these at Start to make sure LevelManager is instantiated
-
-        // Add LoadNextLevel to nextLevelButton
-        nextLevelButton.onClick.AddListener(LevelManager.Instance.LoadNextLevel);
-        
-        // Add ReloadScene to retryLevelButton
-        retryLevelButton.onClick.AddListener(LevelManager.Instance.ReloadScene);
     }
 
     public void UpdateLevelText(int level)
@@ -56,10 +47,16 @@ public class UIManager : MonoSingleton<UIManager>
     public void ShowWinUI()
     {
         // Show Win UI (the next level button)
+        
+        // Add LoadNextLevel to nextLevelButton
+        nextLevelButton.onClick.AddListener(LevelManager.Instance.LoadNextLevel);
     }
 
     public void ShowFailUI()
     {
         // Show Fail UI (the retry level button)
+        
+        // Add ReloadScene to retryLevelButton
+        retryLevelButton.onClick.AddListener(LevelManager.Instance.ReloadScene);
     }
 }
