@@ -12,11 +12,13 @@ public class LevelManager : MonoSingleton<LevelManager>
     [SerializeField] private CellBehaviour cellPrefab = default;
     [SerializeField] private Block block1Prefab = default;
     [SerializeField] private Block block2Prefab = default;
+    [SerializeField] private ExitBehaviour exitPrefab = default;
 
     private int _currentLevel;
     private int _remainingMoves = -1;
     private CellBehaviour[,] _cellBehaviours;
     private Block[] _blocks;
+    private ExitBehaviour[] _exitBehaviours;
     
     private void Awake()
     {
@@ -43,7 +45,7 @@ public class LevelManager : MonoSingleton<LevelManager>
             UIManager.Instance.UpdateMovesText(_remainingMoves);
         }
         
-        // Instantiate cells
+        // Instantiate Cells
         _cellBehaviours = new CellBehaviour[levelData.RowCount, levelData.ColCount];
         Transform cellBehavioursParentTransform = new GameObject("Cell Behaviours Parent").transform;
         
@@ -53,7 +55,7 @@ public class LevelManager : MonoSingleton<LevelManager>
             cb.SetCell(cell);
         }
         
-        // Instantiate movable blocks
+        // Instantiate Movable Blocks
         _blocks = new Block[levelData.MovableInfo.Length];
         Transform blocksParentTransform = new GameObject("Blocks Parent").transform;
 
@@ -71,6 +73,18 @@ public class LevelManager : MonoSingleton<LevelManager>
             
             b.SetMovable(movable);
         }
+        
+        // Instantiate Exits
+        _exitBehaviours = new ExitBehaviour[levelData.ExitInfo.Length];
+        Transform exitsParentTransform = new GameObject("Exits Parent").transform;
+
+        foreach (var ei in levelData.ExitInfo)
+        {
+            ExitBehaviour exitBehaviour = Instantiate(exitPrefab, exitsParentTransform);
+            
+            exitBehaviour.SetExitData(ei);
+        }
+
     }
 
     public void LoadNextLevel()
