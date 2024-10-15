@@ -20,7 +20,7 @@ public class UIManager : MonoSingleton<UIManager>
     [SerializeField] private TextMeshProUGUI levelText = default;
     [SerializeField] private TextMeshProUGUI movesText = default;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         

@@ -16,11 +16,11 @@ public class LevelManager : MonoSingleton<LevelManager>
 
     private int _currentLevel;
     private int _remainingMoves = -1;
-    private CellBehaviour[,] _cellBehaviours;
+    public CellBehaviour[,] cellBehaviours;
     private Block[] _blocks;
     private ExitBehaviour[] _exitBehaviours;
     
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
 
@@ -46,23 +46,26 @@ public class LevelManager : MonoSingleton<LevelManager>
         }
         
         // Instantiate Cells
-        _cellBehaviours = new CellBehaviour[levelData.RowCount, levelData.ColCount];
+        cellBehaviours = new CellBehaviour[levelData.RowCount, levelData.ColCount];
         Transform cellBehavioursParentTransform = new GameObject("Cell Behaviours Parent").transform;
         
         foreach (var cell in levelData.CellInfo)
         {
             CellBehaviour cb = Instantiate(cellPrefab, cellBehavioursParentTransform);
             cb.SetCell(cell);
+            cellBehaviours[cell.Row, cell.Col] = cb;
         }
         
         // Instantiate Movable Blocks
         _blocks = new Block[levelData.MovableInfo.Length];
         Transform blocksParentTransform = new GameObject("Blocks Parent").transform;
 
-        foreach (var movable in levelData.MovableInfo)
+        for (var i = 0; i < levelData.MovableInfo.Length; i++)
         {
+            Movable movable = levelData.MovableInfo[i];
+            
             Block b;
-            if (movable.Length == 1)
+            if (movable.Length == 1)    // TODO Add more prefabs for longer blocks
             {
                 b = Instantiate(block1Prefab, blocksParentTransform);
             }
@@ -70,21 +73,24 @@ public class LevelManager : MonoSingleton<LevelManager>
             {
                 b = Instantiate(block2Prefab, blocksParentTransform);
             }
-            
             b.SetMovable(movable);
+            
+            _blocks[i] = b;
         }
-        
+
         // Instantiate Exits
         _exitBehaviours = new ExitBehaviour[levelData.ExitInfo.Length];
         Transform exitsParentTransform = new GameObject("Exits Parent").transform;
 
-        foreach (var ei in levelData.ExitInfo)
+        for (var i = 0; i < levelData.ExitInfo.Length; i++)
         {
-            ExitBehaviour exitBehaviour = Instantiate(exitPrefab, exitsParentTransform);
+            Exit ei = levelData.ExitInfo[i];
             
+            ExitBehaviour exitBehaviour = Instantiate(exitPrefab, exitsParentTransform);
             exitBehaviour.SetExitData(ei);
+            
+            _exitBehaviours[i] = exitBehaviour;
         }
-
     }
 
     public void LoadNextLevel()

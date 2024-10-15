@@ -39,7 +39,24 @@ public class Block : MonoBehaviour
         }
         
         // Register this Block to the cell(s) it occupies
-        
+        LevelManager.Instance.cellBehaviours[movable.Row, movable.Col].SetOccupyingBlock(this);
+        if (movable.Length > 1)
+        {
+            // If the length is > 1, register this block to all the other cells it occupies
+            for (int i = 1; i < movable.Length; i++)
+            {
+                if (movable.Direction[0] == 0 || movable.Direction[1] == 0)
+                {
+                    // Go up
+                    LevelManager.Instance.cellBehaviours[movable.Row + i, movable.Col].SetOccupyingBlock(this);
+                }
+                else
+                {
+                    // Go right
+                    LevelManager.Instance.cellBehaviours[movable.Row, movable.Col + i].SetOccupyingBlock(this);
+                }
+            }
+        }
         
     }
 }
