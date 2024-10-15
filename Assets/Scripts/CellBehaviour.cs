@@ -11,8 +11,8 @@ public class CellBehaviour : MonoBehaviour
         this.cellData = cellData;
         
         // Positioning
-        transform.Translate(new Vector3((cellData.Col - (LevelManager.Instance.levelData.ColCount / 2f) + 0.5f) * 2f,
+        transform.Translate(new Vector3((cellData.Col - (LevelManager.Instance.levelData.ColCount / 2f) + 0.5f) * 1f,
                                                 0f,
-                                                (cellData.Row - (LevelManager.Instance.levelData.RowCount / 2f) + 0.5f) * 2f));
+                                                -(cellData.Row - (LevelManager.Instance.levelData.RowCount / 2f) + 0.5f) * 1f));
     }
 }

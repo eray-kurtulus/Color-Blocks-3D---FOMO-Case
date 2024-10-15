@@ -45,6 +45,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9fbf610052d0244a3b855f1b80a1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 0
+  movable:
+    Row: 0
+    Col: 0
+    Direction: 
+    Length: 0
+    Colors: 0
+  colorUpDownTextures:
+  - {fileID: 2800000, guid: 722fb648146cc434fb7eb9c44db9a224, type: 3}
+  - {fileID: 2800000, guid: 9601c94dbd1940e4ea8d2ff1001539ef, type: 3}
+  - {fileID: 2800000, guid: c12a9036d280ec8468a281f453a9d358, type: 3}
+  - {fileID: 2800000, guid: 74217bcd97d8596418db2c2e127b693c, type: 3}
+  - {fileID: 2800000, guid: b87032f9c745d2849a751909a1cc2962, type: 3}
+  colorRightLeftTextures:
+  - {fileID: 2800000, guid: 84ac5f3db3e1eae4e86abb1fb0dc1a1b, type: 3}
+  - {fileID: 2800000, guid: a081d10d30d80e743ac7120b1af0dcc9, type: 3}
+  - {fileID: 2800000, guid: e317d2bcb77254648a15d671931e6a53, type: 3}
+  - {fileID: 2800000, guid: 0592b1de15e5fc740bf1047f2e70f97b, type: 3}
+  - {fileID: 2800000, guid: eabfddc6e5cb5434ea9f8bc73dc4f17a, type: 3}
 --- !u!1001 &7673378766466525124
 PrefabInstance:
   m_ObjectHideFlags: 0

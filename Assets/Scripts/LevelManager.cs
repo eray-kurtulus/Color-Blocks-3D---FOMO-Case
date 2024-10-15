@@ -16,12 +16,13 @@ public class LevelManager : MonoSingleton<LevelManager>
     private int _currentLevel;
     private int _remainingMoves = -1;
     private CellBehaviour[,] _cellBehaviours;
+    private Block[] _blocks;
     
     private void Awake()
     {
         base.Awake();
 
-        _currentLevel = PlayerPrefs.GetInt("level", 1);
+        _currentLevel = PlayerPrefs.GetInt("level", 4); // Default is 4 for testing purposes TODO
         
         LoadLevel(_currentLevel);
     }
@@ -44,11 +45,31 @@ public class LevelManager : MonoSingleton<LevelManager>
         
         // Instantiate cells
         _cellBehaviours = new CellBehaviour[levelData.RowCount, levelData.ColCount];
+        Transform cellBehavioursParentTransform = new GameObject("Cell Behaviours Parent").transform;
         
         foreach (var cell in levelData.CellInfo)
         {
-            CellBehaviour cb = Instantiate(cellPrefab);
+            CellBehaviour cb = Instantiate(cellPrefab, cellBehavioursParentTransform);
             cb.SetCell(cell);
+        }
+        
+        // Instantiate movable blocks
+        _blocks = new Block[levelData.MovableInfo.Length];
+        Transform blocksParentTransform = new GameObject("Blocks Parent").transform;
+
+        foreach (var movable in levelData.MovableInfo)
+        {
+            Block b;
+            if (movable.Length == 1)
+            {
+                b = Instantiate(block1Prefab, blocksParentTransform);
+            }
+            else
+            {
+                b = Instantiate(block2Prefab, blocksParentTransform);
+            }
+            
+            b.SetMovable(movable);
         }
     }
 
