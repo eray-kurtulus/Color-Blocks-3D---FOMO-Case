@@ -47,7 +47,7 @@ public class Block : MonoBehaviour
             {
                 if (movable.Direction[0] == 0 || movable.Direction[1] == 0)
                 {
-                    // Go up
+                    // Go down
                     LevelManager.Instance.cellBehaviours[movable.Row + i, movable.Col].SetOccupyingBlock(this);
                 }
                 else
