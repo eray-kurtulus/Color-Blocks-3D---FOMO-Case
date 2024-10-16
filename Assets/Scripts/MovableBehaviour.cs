@@ -397,8 +397,8 @@ public class MovableBehaviour : MonoBehaviour
         Ease beforeExitMovementEase = Ease.OutSine;
             
         float afterExitTweenTiming = 1f;
-        float afterExitTweenMoveAmount = 0.5f * _movable.Length;
-        float afterExitTweenShakeStrength = 15f;
+        float afterExitTweenMoveAmount = 0.75f * _movable.Length;
+        float afterExitTweenShakeStrength = 5f;
         
         transform.DOMove((amountMoved + beforeExitTweenAdditionalMoveAmount) * directionVector, beforeExitTweenTiming)
             .SetRelative()

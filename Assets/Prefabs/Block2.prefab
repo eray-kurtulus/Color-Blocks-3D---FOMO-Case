@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8892734638215350038}
   - component: {fileID: 6748609539939585169}
   - component: {fileID: 8028919968489992397}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Block2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,13 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9fbf610052d0244a3b855f1b80a1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 0
-  movable:
-    Row: 0
-    Col: 0
-    Direction: 
-    Length: 0
-    Colors: 0
   colorUpDownTextures:
   - {fileID: 2800000, guid: ab4780f95d773f944a32ebdb7c6177c6, type: 3}
   - {fileID: 2800000, guid: d8dabaee6416ef64d8328fbdd8294a71, type: 3}
@@ -68,6 +61,7 @@ MonoBehaviour:
   draggableLayer:
     serializedVersion: 2
     m_Bits: 64
+  dragAmount: 0.2
 --- !u!65 &8028919968489992397
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -101,6 +95,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cube2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702478243835675265, guid: e7033935b3385ec4d906abd98777c2f7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3371772289375557691, guid: e7033935b3385ec4d906abd98777c2f7,
         type: 3}
