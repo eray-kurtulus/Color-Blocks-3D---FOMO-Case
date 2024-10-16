@@ -77,6 +77,8 @@ public class MovableBehaviour : MonoBehaviour
     
     private void OnMouseDown()
     {
+        if (GameManager.Instance.currentGameState != GameState.Running) return;
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, draggableLayer))
         {
@@ -93,6 +95,7 @@ public class MovableBehaviour : MonoBehaviour
     private void OnMouseDrag()
     {
         if (!_isDragging) return;
+        if (GameManager.Instance.currentGameState != GameState.Running) return;
         
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, draggableLayer))
@@ -322,6 +325,7 @@ public class MovableBehaviour : MonoBehaviour
         if (hasExited)
         {
             // With exit
+            LevelManager.Instance.ExitedBlock();
 
             switch (direction)
             {
@@ -374,7 +378,7 @@ public class MovableBehaviour : MonoBehaviour
             UpdateOccupiedCells();
         }
 
-        LevelManager.Instance.remainingMoves--;
+        LevelManager.Instance.MadeMove();
     }
 
     private void TweenExitMovement(int amountMoved, Vector3 directionVector)

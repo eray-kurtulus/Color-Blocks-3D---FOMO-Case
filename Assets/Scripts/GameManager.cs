@@ -17,6 +17,10 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void SetGameState(GameState state)
     {
+        if (currentGameState == state) return;              // Don't set the same state twice
+        if (currentGameState == GameState.Win) return;      // Don't change the state when already won
+        if (currentGameState == GameState.Fail) return;     // Don't change the state when already failed
+
         switch (state)
         {
             case GameState.Running:
@@ -28,6 +32,8 @@ public class GameManager : MonoSingleton<GameManager>
                 UIManager.Instance.ShowFailUI();
                 break;
         }
+
+        currentGameState = state;
     }
 }
 

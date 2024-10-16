@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,9 @@ public class UIManager : MonoSingleton<UIManager>
     public void ShowWinUI()
     {
         // Show Win UI (the next level button)
+        winUIRectTransform.localScale = Vector3.zero;
+        winUIRectTransform.gameObject.SetActive(true);
+        winUIRectTransform.DOScale(Vector3.one, 0.8f).SetEase(Ease.OutBack);
         
         // Add LoadNextLevel to nextLevelButton
         nextLevelButton.onClick.AddListener(LevelManager.Instance.LoadNextLevel);
@@ -55,6 +59,9 @@ public class UIManager : MonoSingleton<UIManager>
     public void ShowFailUI()
     {
         // Show Fail UI (the retry level button)
+        failUIRectTransform.localScale = Vector3.zero;
+        failUIRectTransform.gameObject.SetActive(true);
+        failUIRectTransform.DOScale(Vector3.one, 0.8f).SetEase(Ease.OutBack);
         
         // Add ReloadScene to retryLevelButton
         retryLevelButton.onClick.AddListener(LevelManager.Instance.ReloadScene);

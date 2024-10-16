@@ -16,6 +16,7 @@ public class LevelManager : MonoSingleton<LevelManager>
 
     private int _currentLevel;
     public int remainingMoves = -1;
+    public int remainingMovables = -1;
     public CellBehaviour[,] cellBehaviours;
     private MovableBehaviour[] _blocks;
     private ExitBehaviour[] _exitBehaviours;
@@ -24,8 +25,9 @@ public class LevelManager : MonoSingleton<LevelManager>
     {
         base.Awake();
 
-        _currentLevel = PlayerPrefs.GetInt("level", 4); // Default is 4 for testing purposes TODO
-        
+        _currentLevel = PlayerPrefs.GetInt("level", 1);
+        UIManager.Instance.UpdateLevelText(_currentLevel);
+
         LoadLevel(_currentLevel);
     }
 
@@ -60,6 +62,7 @@ public class LevelManager : MonoSingleton<LevelManager>
         // Instantiate Movable Blocks
         _blocks = new MovableBehaviour[levelData.MovableInfo.Length];
         Transform blocksParentTransform = new GameObject("Blocks Parent").transform;
+        remainingMovables = levelData.MovableInfo.Length;
 
         for (var i = 0; i < levelData.MovableInfo.Length; i++)
         {
@@ -104,5 +107,31 @@ public class LevelManager : MonoSingleton<LevelManager>
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ExitedBlock()
+    {
+        remainingMovables--;
+
+        if (remainingMovables == 0)
+        {
+            // No movables left, WIN
+            GameManager.Instance.SetGameState(GameState.Win);
+        }
+    }
+    
+    public void MadeMove()
+    {
+        if (remainingMoves == -1) return;
+
+        remainingMoves--;
+        UIManager.Instance.UpdateMovesText(remainingMoves);
+        if (remainingMoves == 0)
+        {
+            // No moves left, FAIL
+            // NOTE that ExitedBlock will be called before this,
+            // therefore if the player wins at the last move, it won't be a problem
+            GameManager.Instance.SetGameState(GameState.Fail);
+        }
     }
 }
