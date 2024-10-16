@@ -139,6 +139,7 @@ public class MovableBehaviour : MonoBehaviour
                             {
                                 canExit = true;
                                 eb.HideAnimation();
+                                eb.ShreddingParticles(_movable.Colors);
                             }
                         }
                         
@@ -187,6 +188,7 @@ public class MovableBehaviour : MonoBehaviour
                             {
                                 canExit = true;
                                 eb.HideAnimation();
+                                eb.ShreddingParticles(_movable.Colors);
                             }
                         }
                         
@@ -239,6 +241,7 @@ public class MovableBehaviour : MonoBehaviour
                             {
                                 canExit = true;
                                 eb.HideAnimation();
+                                eb.ShreddingParticles(_movable.Colors);
                             }
                         }
                         
@@ -287,6 +290,7 @@ public class MovableBehaviour : MonoBehaviour
                             {
                                 canExit = true;
                                 eb.HideAnimation();
+                                eb.ShreddingParticles(_movable.Colors);
                             }
                         }
                         

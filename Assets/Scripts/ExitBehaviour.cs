@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,18 @@ public class ExitBehaviour : MonoBehaviour
     public Exit exitData;
 
     [SerializeField] private Animator _animator = default;
+    [SerializeField] private ParticleSystem _particleSystem = default;
+    [Space]
     [SerializeField] private Color[] _colors = default;
 
     private int _animHide = Animator.StringToHash("Hide");
+    
+    private ParticleSystemRenderer _particleSystemRenderer;
+
+    private void Awake()
+    {
+        _particleSystemRenderer = gameObject.GetComponent<ParticleSystemRenderer>();
+    }
 
     public void SetExitData(Exit exitData)
     {
@@ -49,5 +59,11 @@ public class ExitBehaviour : MonoBehaviour
     public void HideAnimation()
     {
         _animator.SetTrigger(_animHide);
+    }
+
+    public void ShreddingParticles(int colorIndex)
+    {
+        _particleSystemRenderer.material.color = _colors[colorIndex];
+        _particleSystem.Play();
     }
 }
