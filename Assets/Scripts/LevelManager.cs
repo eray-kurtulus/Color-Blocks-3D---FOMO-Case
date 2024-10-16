@@ -37,7 +37,7 @@ public class LevelManager : MonoSingleton<LevelManager>
     private void LoadLevel(int level)
     {
         // Read json file and create the level
-        levelData = JsonUtility.FromJson<LevelData>(Resources.Load("Levels/Level" + _currentLevel).ToString());
+        levelData = JsonUtility.FromJson<LevelData>(Resources.Load("Levels/Level" + level).ToString());
 
         // Parse MoveLimit
         if (levelData.MoveLimit == 0)
