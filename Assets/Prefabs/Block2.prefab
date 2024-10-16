@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8892734638215350038}
   - component: {fileID: 6748609539939585169}
+  - component: {fileID: 8028919968489992397}
   m_Layer: 0
   m_Name: Block2
   m_TagString: Untagged
@@ -64,6 +65,30 @@ MonoBehaviour:
   - {fileID: 2800000, guid: b72cd400236c20b4fab027faa186ec8a, type: 3}
   - {fileID: 2800000, guid: b679f7e241abcd745a3c29ac9e2fa3df, type: 3}
   - {fileID: 2800000, guid: 327e0c4c8f0a7b6419a7d2c445ef2567, type: 3}
+  draggableLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!65 &8028919968489992397
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2799475957391409813}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1, z: 1}
+  m_Center: {x: 0.5, y: 0.3, z: 0}
 --- !u!1001 &788478457039711979
 PrefabInstance:
   m_ObjectHideFlags: 0

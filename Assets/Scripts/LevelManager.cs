@@ -10,14 +10,14 @@ public class LevelManager : MonoSingleton<LevelManager>
     public LevelData levelData;
 
     [SerializeField] private CellBehaviour cellPrefab = default;
-    [SerializeField] private Block block1Prefab = default;
-    [SerializeField] private Block block2Prefab = default;
+    [SerializeField] private MovableBehaviour block1Prefab = default;
+    [SerializeField] private MovableBehaviour block2Prefab = default;
     [SerializeField] private ExitBehaviour exitPrefab = default;
 
     private int _currentLevel;
-    private int _remainingMoves = -1;
+    public int remainingMoves = -1;
     public CellBehaviour[,] cellBehaviours;
-    private Block[] _blocks;
+    private MovableBehaviour[] _blocks;
     private ExitBehaviour[] _exitBehaviours;
     
     protected override void Awake()
@@ -37,12 +37,13 @@ public class LevelManager : MonoSingleton<LevelManager>
         // Parse MoveLimit
         if (levelData.MoveLimit == 0)
         {
+            // remainingMoves is -1 in this case, unlimited moves
             UIManager.Instance.HideMovesText();
         }
         else
         {
-            _remainingMoves = levelData.MoveLimit;
-            UIManager.Instance.UpdateMovesText(_remainingMoves);
+            remainingMoves = levelData.MoveLimit;
+            UIManager.Instance.UpdateMovesText(remainingMoves);
         }
         
         // Instantiate Cells
@@ -57,14 +58,14 @@ public class LevelManager : MonoSingleton<LevelManager>
         }
         
         // Instantiate Movable Blocks
-        _blocks = new Block[levelData.MovableInfo.Length];
+        _blocks = new MovableBehaviour[levelData.MovableInfo.Length];
         Transform blocksParentTransform = new GameObject("Blocks Parent").transform;
 
         for (var i = 0; i < levelData.MovableInfo.Length; i++)
         {
             Movable movable = levelData.MovableInfo[i];
             
-            Block b;
+            MovableBehaviour b;
             if (movable.Length == 1)    // TODO Add more prefabs for longer blocks
             {
                 b = Instantiate(block1Prefab, blocksParentTransform);

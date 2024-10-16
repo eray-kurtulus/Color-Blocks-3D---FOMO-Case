@@ -5,7 +5,8 @@ using UnityEngine;
 public class CellBehaviour : MonoBehaviour
 {
     public Cell cellData;
-    public Block occupyingBlock = null;
+    public MovableBehaviour occupyingMovableBehaviour = null;
+    public List<ExitBehaviour> attachedExitBehaviours = null;
 
     public void SetCell(Cell cellData)
     {
@@ -15,18 +16,25 @@ public class CellBehaviour : MonoBehaviour
         transform.Translate(new Vector3((cellData.Col - (LevelManager.Instance.levelData.ColCount / 2f) + 0.5f) * 1f,
                                                 0f,
                                                 -(cellData.Row - (LevelManager.Instance.levelData.RowCount / 2f) + 0.5f) * 1f));
+
+        attachedExitBehaviours = new List<ExitBehaviour>();
     }
 
-    public void SetOccupyingBlock(Block block)
+    public void SetOccupyingBlock(MovableBehaviour movableBehaviour)
     {
-        if (block != null && occupyingBlock != null) 
+        if (movableBehaviour != null && occupyingMovableBehaviour != null) 
             Debug.LogWarning("Already occupied cell is occupied again");
         
-        occupyingBlock = block;
+        occupyingMovableBehaviour = movableBehaviour;
     }
 
     public bool IsOccupied()
     {
-        return occupyingBlock != null;
+        return occupyingMovableBehaviour != null;
+    }
+
+    public void AddAttachedExitBehaviour(ExitBehaviour exitBehaviour)
+    {
+        attachedExitBehaviours.Add(exitBehaviour);
     }
 }

@@ -38,5 +38,8 @@ public class ExitBehaviour : MonoBehaviour
         // TODO because this case doesn't involve multiple colors for exits
         transform.GetChild(0).GetComponent<MeshRenderer>().material.color = _colors[exitData.Colors];
         transform.GetChild(1).GetComponent<MeshRenderer>().material.color = _colors[exitData.Colors];
+        
+        // Attach this to the cell
+        LevelManager.Instance.cellBehaviours[exitData.Row, exitData.Col].AddAttachedExitBehaviour(this);
     }
 }

@@ -1,11 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoSingleton<GameManager>
 {
-    public GameState CurrentGameState = GameState.Running;
-    
+    public Camera mainCamera;   // Cache the camera for access
+    public GameState currentGameState = GameState.Running;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        mainCamera = Camera.main;
+    }
+
     public void SetGameState(GameState state)
     {
         switch (state)
