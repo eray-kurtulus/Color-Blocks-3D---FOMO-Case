@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public Camera mainCamera;   // Cache the camera for access
-    public GameState currentGameState = GameState.Running;
+    [ReadOnly] public Camera mainCamera;   // Cache the camera for access
+    [ReadOnly] public GameState currentGameState = GameState.Running;
+    [Space] 
+    [SerializeField] private ParticleSystem confettiParticles = default;
 
     protected override void Awake()
     {
@@ -26,6 +28,7 @@ public class GameManager : MonoSingleton<GameManager>
             case GameState.Running:
                 break;
             case GameState.Win:
+                confettiParticles.Play(true);
                 UIManager.Instance.ShowWinUI();
                 break;
             case GameState.Fail:
