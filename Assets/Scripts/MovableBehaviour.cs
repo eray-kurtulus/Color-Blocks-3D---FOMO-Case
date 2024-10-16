@@ -10,7 +10,7 @@ public class MovableBehaviour : MonoBehaviour
     [SerializeField] private Texture[] colorRightLeftTextures = default;
     [Space]
     [SerializeField] private LayerMask draggableLayer = default;
-    [SerializeField] private float dragAmount = 0.2f;   // The amount of drag required to move a Movable
+    [SerializeField] private float dragAmount = 0.1f;   // The amount of drag required to move a Movable
     [Space]
     
     private Movable _movable;
