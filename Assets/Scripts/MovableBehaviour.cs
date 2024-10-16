@@ -6,15 +6,21 @@ using UnityEngine;
 
 public class MovableBehaviour : MonoBehaviour
 {
-    public bool isActive;
-    public Movable movable;
-
     [SerializeField] private Texture[] colorUpDownTextures = default;
     [SerializeField] private Texture[] colorRightLeftTextures = default;
+    [Space]
+    [SerializeField] private LayerMask draggableLayer = default;
+    [SerializeField] private float dragAmount = 0.2f;   // The amount of drag required to move a Movable
+    [Space]
+    
+    private Movable _movable;
+    private bool _isDragging;
+    private Vector3 _mouseDownPos;
+    private Vector3 _mouseCurrentPos;
 
     public void SetMovable(Movable movable)
     {
-        this.movable = movable;
+        this._movable = movable;
         
         // Positioning
         transform.Translate(new Vector3((movable.Col - (LevelManager.Instance.levelData.ColCount / 2f) + 0.5f) * 1f,
@@ -49,32 +55,26 @@ public class MovableBehaviour : MonoBehaviour
         MovableBehaviour changeToMovableBehaviour = this;
         if (remove) changeToMovableBehaviour = null;
         
-        LevelManager.Instance.cellBehaviours[movable.Row, movable.Col].SetOccupyingBlock(changeToMovableBehaviour);
-        if (movable.Length > 1)
+        LevelManager.Instance.cellBehaviours[_movable.Row, _movable.Col].SetOccupyingBlock(changeToMovableBehaviour);
+        if (_movable.Length > 1)
         {
             // If the length is > 1, register this movableBehaviour to all the other cells it occupies
-            for (int i = 1; i < movable.Length; i++)
+            for (int i = 1; i < _movable.Length; i++)
             {
-                if (movable.Direction[0] == 0 || movable.Direction[1] == 0)
+                if (_movable.Direction[0] == 0 || _movable.Direction[1] == 0)
                 {
                     // Go down
-                    LevelManager.Instance.cellBehaviours[movable.Row + i, movable.Col].SetOccupyingBlock(changeToMovableBehaviour);
+                    LevelManager.Instance.cellBehaviours[_movable.Row + i, _movable.Col].SetOccupyingBlock(changeToMovableBehaviour);
                 }
                 else
                 {
                     // Go right
-                    LevelManager.Instance.cellBehaviours[movable.Row, movable.Col + i].SetOccupyingBlock(changeToMovableBehaviour);
+                    LevelManager.Instance.cellBehaviours[_movable.Row, _movable.Col + i].SetOccupyingBlock(changeToMovableBehaviour);
                 }
             }
         }
     }
 
-    private bool _isDragging;
-    private Vector3 _mouseDownPos;
-    private Vector3 _mouseCurrentPos;
-    private float _dragAmount = 0.5f;
-    [SerializeField] private LayerMask draggableLayer = default;
-    
     private void OnMouseDown()
     {
         if (GameManager.Instance.currentGameState != GameState.Running) return;
@@ -101,10 +101,10 @@ public class MovableBehaviour : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, draggableLayer))
         {
             _mouseCurrentPos = hitInfo.point;
-            if (movable.Direction[0] == 0 || movable.Direction[1] == 0)
+            if (_movable.Direction[0] == 0 || _movable.Direction[1] == 0)
             {
                 // Up-Down direction
-                if (_mouseDownPos.z - _mouseCurrentPos.z > _dragAmount)
+                if (_mouseDownPos.z - _mouseCurrentPos.z > dragAmount)
                 {
                     // Move DOWN (2)
                     Debug.Log("DOWN");
@@ -112,12 +112,12 @@ public class MovableBehaviour : MonoBehaviour
                     // Check downward cells
                     int amountMoved = 0;
                     int row;
-                    for (row = movable.Row + movable.Length; row < LevelManager.Instance.levelData.RowCount; row++)
+                    for (row = _movable.Row + _movable.Length; row < LevelManager.Instance.levelData.RowCount; row++)
                     {
-                        if (LevelManager.Instance.cellBehaviours[row, movable.Col].IsOccupied())
+                        if (LevelManager.Instance.cellBehaviours[row, _movable.Col].IsOccupied())
                         {
                             // Occupied cell
-                            Debug.Log("Cell r:" + row + " c:" + movable.Col + " is occupied, amountMoved:" + amountMoved);
+                            Debug.Log("Cell r:" + row + " c:" + _movable.Col + " is occupied, amountMoved:" + amountMoved);
                             break;
                         }
                         else
@@ -133,9 +133,9 @@ public class MovableBehaviour : MonoBehaviour
                         // At the exit
                         // Check if the movableBehaviour can exit, and move
                         bool canExit = false;
-                        foreach (var eb in LevelManager.Instance.cellBehaviours[row - 1, movable.Col].attachedExitBehaviours)
+                        foreach (var eb in LevelManager.Instance.cellBehaviours[row - 1, _movable.Col].attachedExitBehaviours)
                         {
-                            if (eb.exitData.Direction == 2 && eb.exitData.Colors == movable.Colors)
+                            if (eb.exitData.Direction == 2 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
                             }
@@ -151,7 +151,7 @@ public class MovableBehaviour : MonoBehaviour
                     
                     _isDragging = false;
                 }
-                else if (_mouseCurrentPos.z - _mouseDownPos.z > _dragAmount)
+                else if (_mouseCurrentPos.z - _mouseDownPos.z > dragAmount)
                 {
                     // Move UP (0)
                     Debug.Log("UP");
@@ -159,12 +159,12 @@ public class MovableBehaviour : MonoBehaviour
                     // Check upward cells
                     int amountMoved = 0;
                     int row;
-                    for (row = movable.Row - 1; row >= 0; row--)
+                    for (row = _movable.Row - 1; row >= 0; row--)
                     {
-                        if (LevelManager.Instance.cellBehaviours[row, movable.Col].IsOccupied())
+                        if (LevelManager.Instance.cellBehaviours[row, _movable.Col].IsOccupied())
                         {
                             // Occupied cell
-                            Debug.Log("Cell r:" + row + " c:" + movable.Col + " is occupied, amountMoved:" + amountMoved);
+                            Debug.Log("Cell r:" + row + " c:" + _movable.Col + " is occupied, amountMoved:" + amountMoved);
                             break;
                         }
                         else
@@ -180,9 +180,9 @@ public class MovableBehaviour : MonoBehaviour
                         // At the exit
                         // Check if the movableBehaviour can exit, and move
                         bool canExit = false;
-                        foreach (var eb in LevelManager.Instance.cellBehaviours[0, movable.Col].attachedExitBehaviours)
+                        foreach (var eb in LevelManager.Instance.cellBehaviours[0, _movable.Col].attachedExitBehaviours)
                         {
-                            if (eb.exitData.Direction == 0 && eb.exitData.Colors == movable.Colors)
+                            if (eb.exitData.Direction == 0 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
                             }
@@ -202,7 +202,7 @@ public class MovableBehaviour : MonoBehaviour
             else
             {
                 // Right-Left direction
-                if (_mouseDownPos.x - _mouseCurrentPos.x > _dragAmount)
+                if (_mouseDownPos.x - _mouseCurrentPos.x > dragAmount)
                 {
                     // Move LEFT (3)
                     Debug.Log("LEFT");
@@ -210,12 +210,12 @@ public class MovableBehaviour : MonoBehaviour
                     // Check leftward cells
                     int amountMoved = 0;
                     int col;
-                    for (col = movable.Col -1; col >= 0; col--)
+                    for (col = _movable.Col -1; col >= 0; col--)
                     {
-                        if (LevelManager.Instance.cellBehaviours[movable.Row, col].IsOccupied())
+                        if (LevelManager.Instance.cellBehaviours[_movable.Row, col].IsOccupied())
                         {
                             // Occupied cell
-                            Debug.Log("Cell r:" + movable.Row + " c:" + col + " is occupied, amountMoved:" + amountMoved);
+                            Debug.Log("Cell r:" + _movable.Row + " c:" + col + " is occupied, amountMoved:" + amountMoved);
                             break;
                         }
                         else
@@ -231,9 +231,9 @@ public class MovableBehaviour : MonoBehaviour
                         // At the exit
                         // Check if the movableBehaviour can exit, and move
                         bool canExit = false;
-                        foreach (var eb in LevelManager.Instance.cellBehaviours[movable.Row, 0].attachedExitBehaviours)
+                        foreach (var eb in LevelManager.Instance.cellBehaviours[_movable.Row, 0].attachedExitBehaviours)
                         {
-                            if (eb.exitData.Direction == 3 && eb.exitData.Colors == movable.Colors)
+                            if (eb.exitData.Direction == 3 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
                             }
@@ -249,7 +249,7 @@ public class MovableBehaviour : MonoBehaviour
                     
                     _isDragging = false;
                 }
-                else if (_mouseCurrentPos.x - _mouseDownPos.x > _dragAmount)
+                else if (_mouseCurrentPos.x - _mouseDownPos.x > dragAmount)
                 {
                     // Move RIGHT (1)
                     Debug.Log("RIGHT");
@@ -257,12 +257,12 @@ public class MovableBehaviour : MonoBehaviour
                     // Check rightward cells
                     int amountMoved = 0;
                     int col;
-                    for (col = movable.Col + movable.Length; col < LevelManager.Instance.levelData.ColCount; col++)
+                    for (col = _movable.Col + _movable.Length; col < LevelManager.Instance.levelData.ColCount; col++)
                     {
-                        if (LevelManager.Instance.cellBehaviours[movable.Row, col].IsOccupied())
+                        if (LevelManager.Instance.cellBehaviours[_movable.Row, col].IsOccupied())
                         {
                             // Occupied cell
-                            Debug.Log("Cell r:" + movable.Row + " c:" + col + " is occupied, amountMoved:" + amountMoved);
+                            Debug.Log("Cell r:" + _movable.Row + " c:" + col + " is occupied, amountMoved:" + amountMoved);
                             break;
                         }
                         else
@@ -278,9 +278,9 @@ public class MovableBehaviour : MonoBehaviour
                         // At the exit
                         // Check if the movableBehaviour can exit, and move
                         bool canExit = false;
-                        foreach (var eb in LevelManager.Instance.cellBehaviours[movable.Row, col - 1].attachedExitBehaviours)
+                        foreach (var eb in LevelManager.Instance.cellBehaviours[_movable.Row, col - 1].attachedExitBehaviours)
                         {
-                            if (eb.exitData.Direction == 1 && eb.exitData.Colors == movable.Colors)
+                            if (eb.exitData.Direction == 1 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
                             }
@@ -355,22 +355,22 @@ public class MovableBehaviour : MonoBehaviour
                 case 0:
                     // Move amountMoved amount UP
                     TweenNoExitMovement(amountMoved, Vector3.forward);
-                    movable.Row -= amountMoved;
+                    _movable.Row -= amountMoved;
                     break;
                 case 1:
                     // Move amountMoved amount RIGHT
                     TweenNoExitMovement(amountMoved, Vector3.right);
-                    movable.Col += amountMoved;
+                    _movable.Col += amountMoved;
                     break;
                 case 2:
                     // Move amountMoved amount DOWN
                     TweenNoExitMovement(amountMoved, Vector3.back);
-                    movable.Row += amountMoved;
+                    _movable.Row += amountMoved;
                     break;
                 case 3:
                     // Move amountMoved amount LEFT
                     TweenNoExitMovement(amountMoved, Vector3.left);
-                    movable.Col -= amountMoved;
+                    _movable.Col -= amountMoved;
                     break;
             }
             
@@ -385,12 +385,12 @@ public class MovableBehaviour : MonoBehaviour
     {
         // Move the movableBehaviour until the exit, then scale down and shake while moving a bit further
         float beforeExitTweenTiming = 0.2f * amountMoved;
-        float beforeExitTweenAdditionalMoveAmount = 0.25f * movable.Length;
+        float beforeExitTweenAdditionalMoveAmount = 0.25f * _movable.Length;
         Ease beforeExitMovementEase = Ease.OutSine;
             
         float afterExitTweenTiming = 1f;
-        float afterExitTweenMoveAmount = 0.5f * movable.Length;
-        float afterExitTweenShakeStrength = 20f;
+        float afterExitTweenMoveAmount = 0.5f * _movable.Length;
+        float afterExitTweenShakeStrength = 15f;
         
         transform.DOMove((amountMoved + beforeExitTweenAdditionalMoveAmount) * directionVector, beforeExitTweenTiming)
             .SetRelative()
