@@ -194,6 +194,7 @@ MonoBehaviour:
     CellInfo: []
     MovableInfo: []
     ExitInfo: []
+  totalLevelCount: 4
   cellPrefab: {fileID: 6523515891093879787, guid: 249822c183461e245ae31574064ccf12,
     type: 3}
   block1Prefab: {fileID: 4204314990892017755, guid: 0b0a9b6d21f65804081c6342f21c2d5c,

@@ -7,14 +7,16 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoSingleton<LevelManager>
 {
     // This class loads and manages levels.
-    public LevelData levelData;
-
+    [ReadOnly] public LevelData levelData;
+    
+    [SerializeField] private int totalLevelCount = default;     // TODO this is not the best way to do this
     [SerializeField] private CellBehaviour cellPrefab = default;
     [SerializeField] private MovableBehaviour block1Prefab = default;
     [SerializeField] private MovableBehaviour block2Prefab = default;
     [SerializeField] private ExitBehaviour exitPrefab = default;
 
-    private int _currentLevel;
+    private int _currentLevel;          // This will continue increasing
+    private int _currentLevelIndex;     // This will return to 1 when all levels are played
     public int remainingMoves = -1;
     public int remainingMovables = -1;
     public CellBehaviour[,] cellBehaviours;
@@ -26,10 +28,10 @@ public class LevelManager : MonoSingleton<LevelManager>
         base.Awake();
 
         _currentLevel = PlayerPrefs.GetInt("level", 1);
-        _currentLevel = 1;
         UIManager.Instance.UpdateLevelText(_currentLevel);
 
-        LoadLevel(_currentLevel);
+        _currentLevelIndex = (_currentLevel - 1) % totalLevelCount + 1; // LOOP the levels
+        LoadLevel(_currentLevelIndex);
     }
 
     private void LoadLevel(int level)
