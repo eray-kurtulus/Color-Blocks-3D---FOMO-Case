@@ -26,6 +26,7 @@ public class LevelManager : MonoSingleton<LevelManager>
         base.Awake();
 
         _currentLevel = PlayerPrefs.GetInt("level", 1);
+        _currentLevel = 1;
         UIManager.Instance.UpdateLevelText(_currentLevel);
 
         LoadLevel(_currentLevel);

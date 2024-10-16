@@ -2167,7 +2167,7 @@ PrefabInstance:
     - target: {fileID: 390418502776997676, guid: 5f0d5ecde4edbf3419695cc682264496,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2493869546019879845, guid: 5f0d5ecde4edbf3419695cc682264496,
         type: 3}
@@ -2450,10 +2450,10 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 627003859}
   - {fileID: 301847621}
   - {fileID: 6375466783400551746}
   - {fileID: 6374225874474940132}
   - {fileID: 6967406112631707891}
-  - {fileID: 627003859}
   - {fileID: 4466033227040824126}
   - {fileID: 418671510}

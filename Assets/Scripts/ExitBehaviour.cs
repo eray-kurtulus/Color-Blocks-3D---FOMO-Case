@@ -6,7 +6,10 @@ public class ExitBehaviour : MonoBehaviour
 {
     public Exit exitData;
 
+    [SerializeField] private Animator _animator = default;
     [SerializeField] private Color[] _colors = default;
+
+    private int _animHide = Animator.StringToHash("Hide");
 
     public void SetExitData(Exit exitData)
     {
@@ -41,5 +44,10 @@ public class ExitBehaviour : MonoBehaviour
         
         // Attach this to the cell
         LevelManager.Instance.cellBehaviours[exitData.Row, exitData.Col].AddAttachedExitBehaviour(this);
+    }
+
+    public void HideAnimation()
+    {
+        _animator.SetTrigger(_animHide);
     }
 }

@@ -138,6 +138,7 @@ public class MovableBehaviour : MonoBehaviour
                             if (eb.exitData.Direction == 2 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
+                                eb.HideAnimation();
                             }
                         }
                         
@@ -185,6 +186,7 @@ public class MovableBehaviour : MonoBehaviour
                             if (eb.exitData.Direction == 0 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
+                                eb.HideAnimation();
                             }
                         }
                         
@@ -236,6 +238,7 @@ public class MovableBehaviour : MonoBehaviour
                             if (eb.exitData.Direction == 3 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
+                                eb.HideAnimation();
                             }
                         }
                         
@@ -283,6 +286,7 @@ public class MovableBehaviour : MonoBehaviour
                             if (eb.exitData.Direction == 1 && eb.exitData.Colors == _movable.Colors)
                             {
                                 canExit = true;
+                                eb.HideAnimation();
                             }
                         }
                         
